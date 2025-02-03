@@ -1,7 +1,5 @@
 __pycache__
 build
 output
-.spec
+*.spec
 dist
-
-My Manga Collection.spec
