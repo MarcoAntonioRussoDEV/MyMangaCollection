@@ -1,7 +1,8 @@
 import customtkinter as ctk
-
+import os
 from .Manga_List_Frame import Manga_List_Frame
 from .Add_Manga_Window import Add_Manga_Window
+from get_base_path import icon_path
 
 class MangaApp(ctk.CTk):
     """
@@ -21,7 +22,11 @@ class MangaApp(ctk.CTk):
         # App font
         self.app_font = ctk.CTkFont(family="Comic Sans MS", size=16)
         # Set the icon
-        self.iconbitmap("public/icon.ico")
+        if not os.path.exists(icon_path):
+            print(f"⚠️ ERRORE: L'icona non è stata trovata in {icon_path}")
+        else:
+            print(f"✅ Icona trovata in: {icon_path}")
+            self.iconbitmap(icon_path)
         # Initialize window
         self.title("My Manga Collection")
         self.geometry("800x600")

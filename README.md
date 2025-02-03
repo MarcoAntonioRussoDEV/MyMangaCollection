@@ -68,6 +68,26 @@ pip install -r requirements.txt
     python watchdog_script.py
     ```
 
+## PyInstaller
+
+To create a standalone executable of the application, you can use PyInstaller. Follow these steps:
+
+1. Install PyInstaller if you haven't already:
+
+    ```sh
+    pip install pyinstaller
+    ```
+
+2. Run PyInstaller with the spec file `My Manga Collection.spec`:
+
+    ```sh
+    sudo pyinstaller --clean --onefile --windowed --icon=default_icon.ico -name "My Manga Collection" project.py
+    ```
+
+3. You will find the executable in the `dist/My Manga Collection` folder.
+
+You can now distribute the executable without requiring Python to be installed on the user's machine.
+
 ## Testing
 
 Run the tests using `pytest`:

@@ -1,7 +1,11 @@
 import classes.Manga_App
 import customtkinter as ctk
 from classes.Manga_List_Frame import Manga_List_Frame
-import os, re
+import os
+import re
+from get_base_path import images_folder
+
+
 
 def main(): 
     """Initializes the manga application and starts the main event loop.
@@ -12,17 +16,19 @@ def main():
     clear_images()
     app.mainloop()
 
-
 def clear_images():
     """Removes images from the 'images' directory that are not associated with manga in the Manga_List_Frame.
 
     Iterates through files in 'images', checks if cleaned filenames match manga titles or 'placeholder', and removes unmatched files.
     """   
+    if not os.path.exists(images_folder):
+        os.makedirs(images_folder)
+
     manga_titles = list(map(clean_title, [manga.title for manga in Manga_List_Frame._manga_list]))
-    for file in os.listdir("images"):
+    for file in os.listdir(images_folder):
         filename_without_ext = get_filename_without_extension(file)
         if filename_without_ext not in manga_titles and filename_without_ext != "placeholder":
-            os.remove(f"images/{file}")
+            os.remove(os.path.join(images_folder, file))
 
 def get_filename_without_extension(file):
     """Extracts the filename without its extension.
@@ -31,7 +37,6 @@ def get_filename_without_extension(file):
     """
     match = re.match(r"(.+)\.[^.]+$", file)
     return match[1] if match else file
-
 
 def clean_title(title):
     """Cleans a title string by removing spaces and converting to lowercase.

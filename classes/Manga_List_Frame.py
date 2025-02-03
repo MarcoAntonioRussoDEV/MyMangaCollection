@@ -3,7 +3,7 @@ import csv
 import os
 from .Manga import Manga
 from PIL import Image
-
+from get_base_path import get_executable_path, csv_path
 class Manga_List_Frame(ctk.CTkScrollableFrame):
     """Displays a scrollable list of manga loaded from a CSV file.
 
@@ -37,10 +37,14 @@ class Manga_List_Frame(ctk.CTkScrollableFrame):
             FileNotFoundError: If the 'mangas.csv' file does not exist.
             KeyError: If any of the required columns are missing in the CSV file.
         """
-        if __ := os.path.exists('mangas.csv'):
-            with open('mangas.csv', newline='', encoding='utf-8') as csvfile:
+        if os.path.exists(csv_path):
+            print("File exists")
+            with open(csv_path, newline='', encoding='utf-8') as csvfile:
+                print("File opened")
+                print(f"File path: {csv_path}")
                 reader = csv.DictReader(csvfile)
                 for row in reader:
+                    print(row)
                     manga = Manga(row['title'], row['author'], row['genre'], row['volumes'], row['description'], row.get('image'))
                     self._manga_list.append(manga)
                     self.display_manga(manga)
@@ -85,10 +89,10 @@ class Manga_List_Frame(ctk.CTkScrollableFrame):
 
         # Image
         if manga.image:
-            image_path = os.path.join(os.path.dirname(__file__), '..', manga.image)
+            image_path = os.path.join(get_executable_path(), manga.image)
             image = ctk.CTkImage(light_image=Image.open(image_path), size=(150, 200))
         else:
-            image = ctk.CTkImage(light_image=Image.open("images/placeHolder.jpg"), size=(150, 200))
+            image = ctk.CTkImage(light_image=Image.open(os.path.join(get_executable_path(),"images/placeholder.jpg") ), size=(150, 200))
         image_label = ctk.CTkLabel(card_frame, text="", image=image)
         image_label.grid(row=0, column=0, rowspan=5, padx=10, pady=5, sticky="e")
 
